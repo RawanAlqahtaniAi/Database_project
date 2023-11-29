@@ -1,0 +1,281 @@
+
+/*Create tables,part1*/ 
+
+CREATE TABLE Customer(
+					Customer_Id  NUMBER(20)       PRIMARY KEY,
+					first_name   VARCHAR2(25)     NOT NULL,
+					last_name    VARCHAR2(25)     NOT NULL,
+					phone_number NUMBER(15)		  NOT NULL,
+					activity_address VARCHAR2(50) NOT NULL,
+					date_of_birth DATE,
+					Age Number(2) NOT NULL,
+					constraint chk_cust_phone check (length(phone_number)=15));
+
+CREATE TABLE Transportation(
+							Vehicle_Id       Number(20) PRIMARY KEY,
+							Vehicle_boat     VARCHAR2(30) NOT NULL,
+							Vehicle_bus      VARCHAR2(30) NOT NULL,
+							Color_of_vehicle VARCHAR2(15) NOT NULL,
+							Number_of_passenger NUMBER(5) NOT NULL );
+
+CREATE TABLE Activity_record(
+							Activity_Id NUMBER(20) PRIMARY KEY,
+							Customer_Id  NUMBER(20) ,
+							Activity_start_time varchar2(25) NOT NULL,
+							Activity_end_time varchar2(25) NOT NULL,
+							Date_of_activity date NOT NULL,
+							Price NUMBER(4) NOT NULL,
+							Activity_type VARCHAR2 (25) NOT NULL,
+							CONSTRAINT FK_CUST_ACT_REC FOREIGN KEY(Customer_Id) REFERENCES Customer (Customer_Id));
+
+
+CREATE TABLE Sea_activity(
+						Adventure_Sea NUMBER(5) PRIMARY KEY,
+						Activity_Id  NUMBER(20),
+						Water_activity VARCHAR2(25) NOT NULL,
+						Entertainment VARCHAR2(25) NOT NULL,
+						Fhishing_activites VARCHAR2(25) NOT NULL,
+						Constraint fk_Act_sea_act FOREIGN KEY(Activity_Id ) REFERENCES Activity_record (Activity_Id  ));
+
+
+CREATE TABLE Land_activity (
+						Adventure_land NUMBER(5) PRIMARY KEY,
+						Activity_Id  NUMBER(20),
+						Camping VARCHAR2(25) NOT NULL,
+						Animal_show VARCHAR2(25) NOT NULL,
+						Game_area VARCHAR2(25) NOT NULL,
+						Constraint fk_act_land_act FOREIGN KEY(Activity_Id ) REFERENCES Activity_record (Activity_Id  ));
+
+
+
+CREATE TABLE Reservation(
+						Reservation_ID NUMBER(15) PRIMARY KEY,
+						Customer_Id NUMBER(20),
+						Activity_Id NUMBER(20),
+						Constraint fk_cust_Reservation FOREIGN KEY(Customer_Id) REFERENCES Customer (Customer_Id),
+						Constraint fk_act_Reservation FOREIGN KEY(Activity_Id ) REFERENCES Activity_record (Activity_Id  ));
+	
+
+CREATE TABLE Entertaining_Guide(
+						Guide_Id  NUMBER(20) PRIMARY KEY,
+						Activity_Id  NUMBER(20),
+						Guide_name VARCHAR2(25) NOT NULL,
+						Phone_number NUMBER(15) NOT NULL
+						constraint chk_eg_phone check (length(phone_number)=15),
+						Constraint fk_act_Ent_guide FOREIGN KEY(Activity_Id ) REFERENCES Activity_record (Activity_Id  ));
+
+
+
+CREATE TABLE Responsibilities(
+						Responsibilities_Id NUMBER(20) PRIMARY KEY,
+						Guide_Id  NUMBER(20),
+						Responsbility_type VARCHAR2(25) NOT NULL,
+						Constraint fk_guide_resp FOREIGN KEY(Guide_Id) REFERENCES Entertaining_Guide (Guide_Id));
+
+
+
+
+
+/*Insert into tables,part2*/ 
+
+
+
+Insert into Customer VALUES
+ (1001,'Mada','Abdullah',966541288745123,'KSA[jed,2324]',to_date('10/11/2000',’dd/mm/yyyy’),20);
+ 
+Insert into Customer VALUES
+ (1002,'Shatha','Omar',966584587965412,'KSA[jed,2324]',to_date('22/04/1994',’dd/mm/yyyy’),27);
+
+Insert into Customer VALUES
+ (1003,'Jawaher','Fahad',966587452136598,'KSA[jed,2324]',to_date('07/03/2004',’dd/mm/yyyy’),17);
+
+Insert into Customer VALUES
+ (1004,'Talal','Fahad',966544487985421,'KSA[jed,2324]',to_date('05/05/2001',’dd/mm/yyyy’),19);
+
+Insert into Customer VALUES
+ (1005,'Sara','Ahmed',966855454545458,'KSA[jed,2324]',to_date('24/09/1997',’dd/mm/yyyy’),24);
+
+Insert into Customer VALUES
+ (1006,'Hamza','Saeed',966854545821212,'KSA[jed,2324]',to_date('17/07/1990',’dd/mm/yyyy’),31);
+
+Insert into Customer VALUES
+ (1007,'Yara','Sulatn',966584554545211,'KSA[jed,2324]',to_date('12/01/2015',’dd/mm/yyyy’),6);
+ 
+Insert into Customer VALUES
+ (1008,'Abeer','Nasser',966584554545312,'KSA[jed,2324]',to_date('12/01/2011',’dd/mm/yyyy’),10);
+
+
+Insert into Activity_record(Activity_Id,Customer_Id,Activity_start_time,Price,Activity_end_time,Activity_type,Date_of_activity) VALUES
+(1123,1005,'13:00:00','350','17:30:00','Sea_Activity',to_date('15/01/2021','dd/mm/yyyy'));
+
+Insert into Activity_record(Activity_Id,Customer_Id,Activity_start_time,Price,Activity_end_time,Activity_type,Date_of_activity) VALUES
+(2232,1007,'17:00:00','350','22:00:00','Land_Activity',to_date('21/01/2021',’dd/mm/yyyy’));
+
+Insert into Activity_record(Activity_Id,Customer_Id,Activity_start_time,Price,Activity_end_time,Activity_type,Date_of_activity) VALUES
+(3321,1004,'8:00:00','350','13:30:00','Sea_Activity',to_date('21/01/2021',’dd/mm/yyyy’));
+
+Insert into Activity_record(Activity_Id,Customer_Id,Activity_start_time,Price,Activity_end_time,Activity_type,Date_of_activity) VALUES
+(6481,1003,'10:00:00','350','15:00:00','Land_Activity',to_date('08/02/2021',’dd/mm/yyyy’));
+
+Insert into Activity_record(Activity_Id,Customer_Id,Activity_start_time,Price,Activity_end_time,Activity_type,Date_of_activity) VALUES
+(2381,1005,'14:00:00','350','19:30:00','Sea_Activity',to_date('11/02/2021',’dd/mm/yyyy’));
+
+Insert into Reservation VALUES
+(01,1001,6481);
+
+Insert into Reservation VALUES
+(02,1002,6481);
+
+Insert into Reservation VALUES
+(03,1003,6481);
+
+Insert into Reservation VALUES
+(04,1004,3321);
+
+Insert into Reservation VALUES
+(05,1005,1123);
+
+Insert into Reservation VALUES
+(06,1006,2232);
+
+Insert into Reservation VALUES
+(07,1007,2232);
+
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2001,2381,'Nour Khalid',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2002,1123,'Rawan Saeed',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2003,2232,'Thamer Walid',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2004,6481,'Adam Sulatn',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2005,2381,'Yasmen Omar',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2006,6481,'Wafa Alshihre',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2007,1123,'Khalid Bensuad',966548582154862);
+
+Insert into Entertaining_Guide(Guide_Id,Activity_Id,Guide_name,Phone_number) VALUES
+(2008,2232,'Nessren Baukor',966548582154862);
+
+
+Insert into Responsibilities VALUES
+(21633,2001,'Bodyguard');
+
+Insert into Responsibilities VALUES
+(21756,2002,'Special Needs');
+
+Insert into Responsibilities VALUES
+(21782,2003,'Tracking');
+
+Insert into Responsibilities VALUES
+(21768, 2004,'Advisor');
+
+Insert into Responsibilities VALUES
+(21678, 2005,'Life guard');
+
+Insert into Responsibilities VALUES
+(21699, 2006,'Diving supervisor');
+
+Insert into Responsibilities VALUES
+(21183, 2007,'Animal showman');
+
+Insert into Responsibilities VALUES
+(21559, 2008,'climbing supervisor');
+
+
+insert into Transportation values 
+	(3001,'boat','no','White',20);
+insert into Transportation values
+	(3002,'no','bus','Red',25);
+insert into Transportation values 
+	(3003,'boat','no','Yellow',25);
+insert into Transportation values 
+	(3004,'no','boat','White',15);
+insert into Transportation values 
+	(3005,'boat','no','Blue',20);
+
+
+Insert into Sea_activity VALUES
+(1,1123,'Jet_ski','fireworks','Trawling');
+
+Insert into Sea_activity VALUES
+(2,2232,'Swimming','Movie night','Trawling');
+
+Insert into Sea_activity VALUES
+(3,3321,'Divinig','Fireworks ','Seining');
+
+Insert into Sea_activity VALUES
+(4,1123,'Horse Surfing','Fireworks','Trawling');
+
+Insert into Sea_activity VALUES
+(5,2232,'Kayak Surfing','Movie night','Seining');
+
+				
+insert into Land_activity values
+ ('1',6481,'climbing','horse show','tennis');
+insert into Land_activity values 
+('2',2381,'hicking','horse_show','billiards');
+insert into Land_activity values
+ ('3',6481,'shooting','camel riding','bowling');
+insert into Land_activity values
+ ('4',2381,'shooting','camel riding','tennis');
+insert into Land_activity values
+ ('5',1123,'climbing','camel riding','billiards');
+
+
+
+
+/*Quries,part3*/ 
+
+
+/*information of the customers and what activity_type they have participated*/
+
+ select a.customer_id,a.first_name,a.last_name,a.Age,b.Date_of_activity,b.Activity_type 
+   from customer a inner join activity_record b
+     on a.customer_id=b.customer_id
+  order by b.Date_of_activity asc;
+  
+  
+
+/*total amount spent by the each customer on the activities*/ 
+ 
+  select sum(b.price) total_amount,a.first_name,a.last_name
+    from customer a inner join activity_record b
+      on a.customer_id=b.customer_id
+   group by a.first_name,a.last_name
+   order by sum(b.price) desc;
+
+
+
+/*Guide of the activity performed and the customer who was guided*/
+
+select a.Guide_name,b.Date_of_activity,b.Activity_type,c.first_name||c.last_name CustomerName
+  from (Entertaining_Guide a inner join activity_record b
+    on a.activity_id=b.activity_id) inner join customer c on c.customer_id=b.customer_id
+ order by b.Date_of_activity asc;
+
+	 
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
